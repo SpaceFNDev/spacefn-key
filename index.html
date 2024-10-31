@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Your SpaceFN Key</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .key-display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Your SpaceFN Key</h1>
+        <p>Click the button below to generate your key.</p>
+        <button onclick="generateKey()">Generate Key</button>
+        <div id="key" class="key-display"></div>
+    </div>
+
+    <script>
+        async function generateKey() {
+            try {
+                const response = await fetch("http://localhost:5000/generate_key");
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById("key").innerText = "Your Key: " + data.key;
+                } else {
+                    document.getElementById("key").innerText = "Error: Could not generate key.";
+                }
+            } catch (error) {
+                console.error("Error fetching key:", error);
+                document.getElementById("key").innerText = "Error: Server unavailable.";
+            }
+        }
+    </script>
+</body>
+</html>
