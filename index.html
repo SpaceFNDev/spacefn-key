@@ -1,3 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Generated Key</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .key-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .key {
+            font-size: 1.5em;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="key-container">
+    <h1>Your Generated Key</h1>
+    <div class="key" id="keyDisplay">Loading...</div>
+    <button id="copyButton">Copy Key</button>
+</div>
+
 <script>
     async function fetchKeys() {
         try {
@@ -15,7 +61,7 @@
 
     async function fetchObfuscatedLink() {
         try {
-            const response = await fetch('http://localhost:3000/generate-link'); // Change this to your deployed URL later
+            const response = await fetch('http://localhost:3000/generate-link'); // Change this to your deployed URL
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -74,3 +120,6 @@
 
     displayKey();
 </script>
+
+</body>
+</html>
