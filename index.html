@@ -49,20 +49,23 @@
         try {
             // Fetch the keys from the specified raw JSON file
             const response = await fetch('https://raw.githubusercontent.com/SpaceFNDev/spacefn-keys/refs/heads/main/keys.json'); 
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`); // Throw an error if the fetch fails
+            }
             return await response.json();
         } catch (error) {
             console.error('Error fetching keys:', error);
             document.getElementById('keyDisplay').textContent = 'Error fetching keys.';
+            return null; // Return null if there's an error
         }
     }
 
     async function displayKey() {
         const keys = await fetchKeys(); // Fetch the keys from the JSON file
-        if (!keys) return;
+        if (!keys) return; // If keys are null, exit the function
 
-        // Get the current HWID from the first entry in the keys array (for demonstration)
-        // In a real-world scenario, you should replace this with actual logic to obtain the HWID
-        const hwidToCheck = keys[0].hwid; // Fetch HWID directly from the JSON file (or any logic you want)
+        // For demonstration, we'll just take the first HWID from the keys array
+        const hwidToCheck = keys[0].hwid; // Change this logic as needed
 
         // Find the key associated with the specified HWID
         const userKey = keys.find(key => key.hwid === hwidToCheck);
