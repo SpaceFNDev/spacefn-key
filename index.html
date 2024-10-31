@@ -46,6 +46,7 @@
 
 <script>
     async function fetchKey() {
+        // Get the HWID from URL parameters
         const params = new URLSearchParams(window.location.search);
         const hwid = params.get('hwid'); // Get the hwid parameter from the URL
 
@@ -55,7 +56,7 @@
         }
 
         try {
-            const response = await fetch('https://raw.githubusercontent.com/SpaceFNDev/spacefn-keys/main/keys.json'); // Adjust the path if necessary
+            const response = await fetch('https://raw.githubusercontent.com/SpaceFNDev/spacefn-keys/refs/heads/main/keys.json'); // Fetch the keys
             const keys = await response.json();
 
             // Find the key associated with the provided HWID
