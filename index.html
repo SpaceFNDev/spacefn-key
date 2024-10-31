@@ -45,38 +45,39 @@
 </div>
 
 <script>
-    async function fetchKey() {
-        // Get the HWID from URL parameters
-        const params = new URLSearchParams(window.location.search);
-        const hwid = params.get('hwid'); // Get the hwid parameter from the URL
-
-        if (!hwid) {
-            document.getElementById('keyDisplay').textContent = 'No HWID provided.';
-            return;
-        }
-
+    async function fetchKeys() {
         try {
-            const response = await fetch('https://raw.githubusercontent.com/SpaceFNDev/spacefn-keys/refs/heads/main/keys.json'); // Fetch the keys
-            const keys = await response.json();
-
-            // Find the key associated with the provided HWID
-            const userKey = keys.find(key => key.hwid === hwid);
-            if (userKey) {
-                const expiryDate = new Date(userKey.expiry * 1000); // Convert timestamp to milliseconds
-                const currentDate = new Date();
-                
-                // Check if the key is expired
-                if (currentDate < expiryDate) {
-                    document.getElementById('keyDisplay').textContent = `Key: ${userKey.key} (Expires at: ${expiryDate.toLocaleString()})`; // Display the user's key
-                } else {
-                    document.getElementById('keyDisplay').textContent = 'The key has expired.';
-                }
-            } else {
-                document.getElementById('keyDisplay').textContent = 'No keys available for this HWID.';
-            }
+            // Fetch the keys from the specified raw JSON file
+            const response = await fetch('https://raw.githubusercontent.com/SpaceFNDev/spacefn-keys/refs/heads/main/keys.json'); 
+            return await response.json();
         } catch (error) {
             console.error('Error fetching keys:', error);
             document.getElementById('keyDisplay').textContent = 'Error fetching keys.';
+        }
+    }
+
+    async function displayKey() {
+        const keys = await fetchKeys(); // Fetch the keys from the JSON file
+        if (!keys) return;
+
+        // Get the current HWID from the first entry in the keys array (for demonstration)
+        // In a real-world scenario, you should replace this with actual logic to obtain the HWID
+        const hwidToCheck = keys[0].hwid; // Fetch HWID directly from the JSON file (or any logic you want)
+
+        // Find the key associated with the specified HWID
+        const userKey = keys.find(key => key.hwid === hwidToCheck);
+        if (userKey) {
+            const expiryDate = new Date(userKey.expiry * 1000); // Convert timestamp to milliseconds
+            const currentDate = new Date();
+            
+            // Check if the key is expired
+            if (currentDate < expiryDate) {
+                document.getElementById('keyDisplay').textContent = `Key: ${userKey.key} (Expires at: ${expiryDate.toLocaleString()})`; // Display the user's key
+            } else {
+                document.getElementById('keyDisplay').textContent = 'The key has expired.';
+            }
+        } else {
+            document.getElementById('keyDisplay').textContent = 'No keys available for this HWID.';
         }
     }
 
@@ -98,8 +99,8 @@
         window.getSelection().removeAllRanges(); // Deselect the text
     };
 
-    // Fetch the key when the page loads
-    fetchKey();
+    // Display the key when the page loads
+    displayKey();
 </script>
 
 </body>
