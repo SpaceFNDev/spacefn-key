@@ -62,9 +62,17 @@
             // Find the key associated with the provided HWID
             const userKey = keys.find(key => key.hwid === hwid);
             if (userKey) {
-                document.getElementById('keyDisplay').textContent = userKey.key; // Display the user's key
+                const expiryDate = new Date(userKey.expiry * 1000); // Convert timestamp to milliseconds
+                const currentDate = new Date();
+                
+                // Check if the key is expired
+                if (currentDate < expiryDate) {
+                    document.getElementById('keyDisplay').textContent = `Key: ${userKey.key} (Expires at: ${expiryDate.toLocaleString()})`; // Display the user's key
+                } else {
+                    document.getElementById('keyDisplay').textContent = 'The key has expired.';
+                }
             } else {
-                document.getElementById('keyDisplay').textContent = 'No keys available.';
+                document.getElementById('keyDisplay').textContent = 'No keys available for this HWID.';
             }
         } catch (error) {
             console.error('Error fetching keys:', error);
